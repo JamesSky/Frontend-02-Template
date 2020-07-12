@@ -2,7 +2,7 @@
 
 > Number的IEEE754理解的还不够透彻，参考地址：
 
-1. [https://github.com/camsong/blog/issues/9](https://github.com/camsong/blog/issues/9
+1. [https://github.com/camsong/blog/issues/9](https://github.com/camsong/blog/issues/9)
 
 2. [http://dsgn.ckcest.cn/index.php?m=content&c=index&a=show&catid=7&id=1484](http://dsgn.ckcest.cn/index.php?m=content&c=index&a=show&catid=7&id=1484)
 

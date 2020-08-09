@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<style type="text/css">
+	div #id.class {
+		width: 10px;
+		height: 10px;
+		background: red;
+	}
+</style>
+<body id="bb">
+<div>
+	<div class="class" id="id"></div>
+</div>
+</body>
+<script type="text/javascript">
+
+function disassembleSelector(selectorStr, element) {
+	selectorStr += `#${element}`;
+	return selectorStr.split(' ').reverse().map(item => {
+		return item.match(/(\#|\.)*[a-z0-9]+/gi)
+	})
+}
+
+function getParents(el, parentSelector) {
+    if (parentSelector === undefined) {
+        parentSelector = document;
+    }
+
+    var parents = [];
+    var p = el.parentNode;
+
+    while (p !== parentSelector) {
+        
+        var o = p;
+        parents.push(o);
+        p = o.parentNode;
+    }
+    parents.push(parentSelector);
+    if (parents.includes(null)) {
+    	return false
+    }
+    return true
+}
+console.log(getParents(document.getElementById('id'), document.getElementById('bb')));
+
+function match(selector, element) {
+	let selectorList = disassembleSelector(selector, element.getAttribute('id'));
+	let returnflagList = [];
+	for(let i = 0; i < selectorList.length; i++) {
+		let curflagList = [];
+		for (let j = 0; j < selectorList[i].length; j++) {
+			let jSelector = selectorList[i][j];
+			let _selector = null;
+			if (jSelector.startsWith('#')) {
+				_selector = document.getElementById(jSelector.replace('#', ''))
+			} else if (jSelector.startsWith('.')) {
+				_selector = document.getElementsByClassName(jSelector.replace('.', ''))[0]
+			} else {
+				_selector = document.getElementsByTagName(jSelector)[0]
+			}
+			if (_selector) {
+				curflagList.push(true);
+			} else {
+				curflagList.push(false);
+			}
+		}
+		
+		if (curflagList.includes(false)) {
+			returnflagList.push(false)
+		} else {
+			returnflagList.push(true)
+		}
+	}
+	if (returnflagList.includes(false)) {
+		return false;
+	}
+	return true;
+}
+// 缺失二层循环中父元素和当前元素选择判读逻辑，不应该是document判断，伪函数，大体操作思路如上
+console.log( match("div #id.class", document.getElementById("id")) );
+console.log( match("div #id.class1", document.getElementById("id")) );
+</script>
+</html>
